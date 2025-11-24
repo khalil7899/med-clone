@@ -1,0 +1,19 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: medclone_app
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "8000:8000"
+    working_dir: /var/www/html
+    command: php artisan serve --host=0.0.0.0 --port=8000
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: medclone_mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"   # Web interface
+      - "1025:1025"   # SMTP
