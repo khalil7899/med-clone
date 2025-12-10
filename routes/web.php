@@ -7,7 +7,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->name('dashboard');
+    Route::get('/post/create', [\App\Http\Controllers\PostController::class, 'create'])->name('post.create');
+    Route::post('/post/create', [\App\Http\Controllers\PostController::class, 'store'])->name('post.store');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
